@@ -1,6 +1,6 @@
 const Feature = () => {
   return (
-    <div className="w-[40%] mx-auto flex items-center justify-center gap-15 border py-3 rounded-4xl mb-20">
+    <div className="w-[45%] mx-auto flex items-center justify-center gap-15 border py-3 rounded-4xl mb-20">
       <div className="text-center">
         <h3 className='text-xl'>Member</h3>
         <p className='text-4xl font-semibold'>50+</p>
