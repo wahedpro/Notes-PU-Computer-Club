@@ -1,11 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { IoIosEyeOff } from "react-icons/io";
 import { useState } from "react";
 import { IoMdEye } from "react-icons/io";
 
 
 const RegistrationPage = () => {
-
     const [showPassword, setShowPassword] = useState(false);
 
     const handleRegister = (e)=>{
@@ -26,29 +25,17 @@ const RegistrationPage = () => {
       <form onSubmit={handleRegister} className="w-[35%] mx-auto flex flex-col items-center gap-4 border py-8" >
         <div className="flex flex-col">
           <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your Name"
-            className="border pl-2 pr-30 py-2"
-            required
-          />
+          <input type="text" name="name" placeholder="Enter your Name" className="border pl-2 pr-30 py-2" required />
         </div>
         <div className="flex flex-col">
           <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your Email"
-            className="border pl-2 pr-30 py-2"
-            required
-          />
+          <input type="email" name="email" placeholder="Enter your Email" className="border pl-2 pr-30 py-2" required />
         </div>
         <div className="flex flex-col">
           <label>Password</label>
           <div className="flex border">
             <input type={showPassword ? "text": "password"} name="password" placeholder="Enter your password" className="pl-2 pr-23 py-2" required />
-            <button onClick={()=>{setShowPassword(!showPassword)}} className="pr-2 text-xl">{showPassword ? <IoIosEyeOff />:<IoMdEye/> }</button>
+            <button type="button" onClick={()=>{setShowPassword(!showPassword)}} className="pr-2 text-xl">{showPassword ? <IoIosEyeOff />:<IoMdEye/> }</button>
           </div>
         </div>
         <button type="submit" className="bg-black text-white px-5 py-2 rounded-4xl hover:bg-[#3b3ffb]" > Create Account  </button>
