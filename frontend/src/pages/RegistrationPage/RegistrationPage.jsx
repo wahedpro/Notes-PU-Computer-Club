@@ -1,10 +1,12 @@
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { IoIosEyeOff } from "react-icons/io";
 import { useState } from "react";
 import { IoMdEye } from "react-icons/io";
 
 
 const RegistrationPage = () => {
+
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
     const handleRegister = (e)=>{
@@ -13,7 +15,21 @@ const RegistrationPage = () => {
         const email = e.target.email.value;
         const password = e.target.password.value;
         const userInfo = {name,email,password};
-        console.log(userInfo);
+       
+        fetch("http://localhost:5000/register",{
+          method: "POST",
+          headers:{
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify(userInfo),
+        }).then((res)=>res.json())
+        .then((data)=>{
+          if(data.insertedId){
+            navigate('/login');
+          }else{
+            console.log("data not pass");
+          }
+        })
     }
 
   return (
