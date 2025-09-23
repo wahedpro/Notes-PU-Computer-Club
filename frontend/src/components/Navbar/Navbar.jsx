@@ -1,8 +1,15 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { Link } from "react-router-dom"
+import {useContext } from "react"
+import { Link} from "react-router-dom"
+import { AuthContext } from "../../context/AuthContext"
 
 const Navbar = () => {
+  
+  const {user, logout} = useContext(AuthContext)
+
+  console.log(user);
+
   useGSAP(()=>{
     gsap.from(".navbar",{
       y:-60,
@@ -16,11 +23,11 @@ const Navbar = () => {
         <Link to="/"><img className="w-[125px]" src="./logo.png" alt="" /></Link>
         <div className='flex gap-10 border-b py-2 px-5 rounded-2xl border-gray-200'>
             <Link to="/">Home</Link>
-            <Link>Notes</Link>
+            {user ? <Link to="/notes">Notes</Link> : ""}
             <Link>Video</Link>
             <Link>Memory</Link>
         </div>
-        <Link to="/login" className="bg-[#3b3ffb] text-white px-5 py-2 rounded-4xl">Login</Link>
+        {user ? <button onClick={()=>logout()} className="bg-[#3b3ffb] text-white px-5 py-2 rounded-4xl">Logout</button>: <Link to="/login" className="bg-[#3b3ffb] text-white px-5 py-2 rounded-4xl">Login</Link>}
     </div>
   )
 }

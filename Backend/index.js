@@ -1,14 +1,13 @@
 import express from "express";
-import cors from "cors"
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import cors from "cors";
+import { MongoClient, ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ub1fi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -18,25 +17,44 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 async function run() {
   try {
-
     const userCollection = client.db("PUComputerClub").collection("userData");
 
-    app.post('/register', async (req,res)=>{
-        const userInfo = req.body;
-        const result = await userCollection.insertOne(userInfo);
-        res.send(result)
-    })
+    //register
+    app.post("/register", async (req, res) => {
+      const userInfo = req.body;
+      const result = await userCollection.insertOne(userInfo);
+      res.send(result);
+    });
+
+    // login
+    app.post("/login", async (req, res) => {
+      const { email, password } = req.body;
+      const result = await userCollection.findOne({ email, password });
+      if (!result) {
+        return res.json({
+          success: false,
+          message: "Email or Password Invalid",
+        });
+      }
+      res.json({
+        success: true,
+        message: "Login successful",
+        user: result,
+      });
+    });
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
@@ -44,12 +62,10 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.get("/", (req, res) => {
+  res.send("backend in running");
+});
 
-app.get("/",(req, res)=>{
-    res.send("backend in running");
-})
-
-
-app.listen(5000,(req,res)=>{
-    console.log("server is running");
-})
+app.listen(5000, (req, res) => {
+  console.log("server is running");
+});
