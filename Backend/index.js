@@ -3,6 +3,7 @@ import cors from "cors";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
+import { ObjectId } from "mongodb";
 
 const app = express();
 
@@ -23,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const userCollection = client.db("PUComputerClub").collection("userData");
-
+    const notesCollection = client.db("PUComputerClub").collection("notes")
     //register
     app.post("/register", async (req, res) => {
       const userInfo = req.body;
@@ -47,6 +48,40 @@ async function run() {
         user: result,
       });
     });
+
+    // add notes
+    app.post("/notes", async (req, res)=>{
+      const notes = req.body;
+      const result = await notesCollection.insertOne(notes);
+      res.send(result);
+    })
+
+    // get notes
+    app.get("/notes", async (req, res)=>{
+      const result = await notesCollection.find().toArray();
+      res.send(result);
+    })
+
+
+    // DELETE note
+    app.delete("/notes/:id", async (req, res) => {
+      const id = req.params.id;
+      await notesCollection.deleteOne({ _id: new ObjectId(id) });
+      res.json({ message: "Note deleted successfully" });
+    });
+
+    app.put("/notes/:id", async (req, res) => {
+      const id = req.params.id;
+      const { title, description } = req.body;
+
+      await notesCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { title, description } }
+      );
+
+      res.json({ message: "Note updated successfully" });
+    });
+
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();

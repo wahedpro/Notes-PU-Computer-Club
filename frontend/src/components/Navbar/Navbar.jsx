@@ -8,8 +8,6 @@ const Navbar = () => {
   
   const {user, logout} = useContext(AuthContext)
 
-  console.log(user);
-
   useGSAP(()=>{
     gsap.from(".navbar",{
       y:-60,

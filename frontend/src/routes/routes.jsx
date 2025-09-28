@@ -6,6 +6,7 @@ import HomePage from "../pages/HomePage/HomePage";
 import RegistrationPage from "../pages/RegistrationPage/RegistrationPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import NotesPage from "../pages/NotesPage/NotesPage";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path:"notes",
-        element: <NotesPage></NotesPage>
+        element: <PrivateRoute><NotesPage></NotesPage></PrivateRoute>
       }
     ]
   },
